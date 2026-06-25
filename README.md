@@ -198,20 +198,39 @@ kermit_koffee/
 
 ## Database Schema
 
+```mermaid
+erDiagram
+  CUSTOMERS {
+    int id PK
+    string username
+    string email
+    string password_hash
+    datetime created_at
+  }
+  PRODUCTS {
+    int id PK
+    string name
+    string category
+    float price
+    string description
+  }
+  ORDERS {
+    int id PK
+    int customer_id FK
+    datetime created_at
+    float total_amount
+  }
+  ORDER_ITEMS {
+    int id PK
+    int order_id FK
+    int product_id FK
+    int quantity
+    float unit_price
+  }
+  CUSTOMERS ||--o{ ORDERS : places
+  ORDERS ||--o{ ORDER_ITEMS : contains
+  PRODUCTS ||--o{ ORDER_ITEMS : included_in
 ```
-customers
-  id, username, email, password_hash, created_at
-
-products
-  id, name, category, price, description
-
-orders
-  id, customer_id (FK → customers), created_at, total_amount
-
-order_items
-  id, order_id (FK → orders), product_id (FK → products), quantity, unit_price
-```
-
 ---
 
 ## Setup & Installation
