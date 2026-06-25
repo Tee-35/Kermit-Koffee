@@ -20,3 +20,5 @@ __pycache__/
 .vscode/
 commands.txt
 *.code-workspace
+commands.txt
+*.code-workspace
