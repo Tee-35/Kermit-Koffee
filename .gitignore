@@ -1,0 +1,20 @@
+# Environment variables — contains passwords and secret keys
+.env
+
+# Virtual environment — recreated via requirements.txt
+kkoffee_venv/
+kermit_koffee.code-workspace
+# Personal notes and command cheat sheets
+commands.txt
+
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Mac system file
+.DS_Store
+
+# VS Code settings
+.vscode/

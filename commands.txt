@@ -1,4 +1,4 @@
-source eagle_venv/bin/activate
+source kkoffee_venv/bin/activate
 pip install -r requirements.txt
-cat .env – save the .env
+cat .env - save the .env
 git pull
