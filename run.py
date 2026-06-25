@@ -1,4 +1,5 @@
 from app import create_app, db
+from app.models import Customer, Product, Order, OrderItem
 
 app = create_app()
 
