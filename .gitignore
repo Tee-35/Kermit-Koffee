@@ -18,3 +18,5 @@ __pycache__/
 
 # VS Code settings
 .vscode/
+commands.txt
+*.code-workspace
