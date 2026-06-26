@@ -88,6 +88,42 @@ This project builds that operational backbone.
 
 The API is consumed over HTTP. All requests and responses use JSON.
 
+```mermaid
+flowchart TD
+    A[Customer App] -->|HTTP Request| B[Flask API]
+    B -->|Query| C[MySQL Database]
+    C -->|Data| B
+    B -->|JSON Response| A
+```
+```mermaid
+flowchart TD
+    Client([Customer App / Postman])
+
+    Client -->|POST /auth/register| Auth[Auth Routes]
+    Client -->|POST /auth/login| Auth
+    Auth -->|Hash password| DB[(MySQL Database)]
+    Auth -->|Return JWT token| Client
+
+    Client -->|GET /menu| Menu[Menu Routes]
+    Menu -->|Fetch all products| DB
+    Menu -->|Return JSON menu| Client
+
+    Client -->|POST /orders - JWT required| Orders[Order Routes]
+    Client -->|GET /orders - JWT required| Orders
+    Orders -->|Verify JWT token| JWT{JWT Valid?}
+    JWT -->|No| Reject[401 Unauthorised]
+    JWT -->|Yes| DB
+    DB -->|Order data| Orders
+    Orders -->|Return JSON response| Client
+
+    Client -->|GET /analytics - JWT required| Analytics[Analytics Routes]
+    Analytics -->|Verify JWT token| JWT
+    Analytics -->|Read data via pandas| DB
+    DB -->|Raw data| Analytics
+    Analytics -->|Return insights JSON| Client
+```
+
+
 **Example flow:**
 
 1. A customer registers via `POST /auth/register`
