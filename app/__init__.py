@@ -19,4 +19,7 @@ def create_app():
     from app.routes.menu import menu_bp
     app.register_blueprint(menu_bp, url_prefix='/menu')
 
+    from app.routes.orders import orders_bp
+    app.register_blueprint(orders_bp, url_prefix='/orders')
+
     return app
