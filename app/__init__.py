@@ -13,8 +13,10 @@ def create_app():
     db.init_app(app)
     jwt.init_app(app)
 
-    # Register blueprints
     from app.routes.auth import auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
+
+    from app.routes.menu import menu_bp
+    app.register_blueprint(menu_bp, url_prefix='/menu')
 
     return app
