@@ -14,9 +14,6 @@ def register():
     email = data.get('email')
     password = data.get('password')
 
-    if not username or not email or not password:
-        return jsonify({'error': 'Username, email and password are required'}), 400
-
     existing = Customer.query.filter_by(email=email).first()
     if existing:
         return jsonify({'error': 'Email already registered'}), 409
@@ -41,9 +38,6 @@ def login():
 
     email = data.get('email')
     password = data.get('password')
-
-    if not email or not password:
-        return jsonify({'error': 'Email and password are required'}), 400
 
     customer = Customer.query.filter_by(email=email).first()
 
