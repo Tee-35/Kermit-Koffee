@@ -97,4 +97,68 @@ HTTP status returned: `400 Bad Request` — correct behaviour. The blank custome
 
 ---
 
-*More bugs to follow in Stage 2*
+## Bug 2 — App Crash When No JSON Body Sent to Orders Endpoint
+
+### Stage
+Stage 2 — Fix
+
+### File Affected
+`app/routes/orders.py`
+
+### What Was the Bug?
+The orders endpoint used `data.get['items']` instead of `data.get('items')`. Square brackets on a method reference causes a `TypeError` crash. Additionally there was no check for whether a JSON body was sent at all.
+
+### Why Did It Matter?
+- **Availability** — a single bad request crashed the entire API for all users
+- **No graceful degradation** — instead of a helpful error message the caller received an HTML error page
+- In production this would cause a 500 error visible to all clients
+
+### The Buggy Code
+```python
+data = request.get_json()
+items = data.get['items']  # TypeError — square brackets on a method
+```
+
+### How It Was Demonstrated
+A POST request was sent with an empty JSON body:
+
+```bash
+curl -X POST http://127.0.0.1:5000/orders/ \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer TOKEN" \
+-d '{}'
+```
+
+**Result before fix:**
+
+The app returned a full HTML error page and logged a 500 error.
+
+### The Fix
+```python
+data = request.get_json()
+
+if not data:
+    return jsonify({'error': 'Request body must be JSON'}), 400
+
+items = data.get('items', [])
+
+if not items:
+    return jsonify({'error': 'No items provided'}), 400
+```
+
+### How It Was Tested After Fix
+Same request sent again:
+
+**Response after fix:**
+```json
+{"error": "Request body must be JSON"}
+```
+
+HTTP status returned: `400 Bad Request` — correct behaviour. No crash.
+
+### Git Commits
+- `bug: unsafe data access causes crash when items missing from order`
+- `fix: add error handling for missing JSON body and items in orders endpoint`
+
+
+*More bugs to follow in Stage 3*
