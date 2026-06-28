@@ -14,6 +14,18 @@ def register():
     email = data.get('email')
     password = data.get('password')
 
+    if not username or not email or not password:
+        return jsonify({'error': 'Username, email and password are required'}), 400
+
+    if len(username) < 3:
+        return jsonify({'error': 'Username must be at least 3 characters'}), 400
+
+    if '@' not in email:
+        return jsonify({'error': 'Invalid email address'}), 400
+
+    if len(password) < 6:
+        return jsonify({'error': 'Password must be at least 6 characters'}), 400
+
     existing = Customer.query.filter_by(email=email).first()
     if existing:
         return jsonify({'error': 'Email already registered'}), 409
