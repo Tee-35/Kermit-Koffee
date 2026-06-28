@@ -12,7 +12,7 @@ orders_bp = Blueprint('orders', __name__)
 def place_order():
     customer_id = get_jwt_identity()
     data = request.get_json()
-    items = data.get('items', [])
+    items = data.get['items']
 
     if not items:
         return jsonify({'error': 'No items provided'}), 400
