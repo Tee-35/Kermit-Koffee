@@ -22,4 +22,7 @@ def create_app():
     from app.routes.orders import orders_bp
     app.register_blueprint(orders_bp, url_prefix='/orders')
 
+    from app.routes.analytics import analytics_bp
+    app.register_blueprint(analytics_bp, url_prefix='/analytics')
+
     return app
